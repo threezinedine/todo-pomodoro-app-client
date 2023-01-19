@@ -4,26 +4,6 @@ describe('Login Screen Test', () => {
     it('should receive username and password then can be submitted', () => {
         cy.visit('http://localhost:3000')
 
-        cy.get('[data-testid="username"]')
-            .type("thr")
-            .blur()
-
-        cy.get('#root')
-            .contains(usernameHaveLessThanFourCharactersErrorString)
-
-        cy.get('[data-testid="username"]')
-            .type("threezinedine")
-
-        cy.get('[data-testid="password"]')
-            .type("threezinedine")
-
-        cy.get('[data-testid="submit"]')
-            .click()
-    })
-
-    it('should have error message when entering non-valid username and remove the error message when the username is valid', () => {
-        cy.visit("http://localhost:3000")
-
         cy.contains(usernameHaveLessThanFourCharactersErrorString).should('not.exist')
 
         cy.get('[data-testid="username"]')
@@ -32,10 +12,20 @@ describe('Login Screen Test', () => {
 
         cy.contains(usernameHaveLessThanFourCharactersErrorString).should('exist')
 
+        cy.get('[data-testid="submit"]')
+            .click()
+
+        cy.contains("Login error").should('exist')
+
         cy.get('[data-testid="username"]')
             .type("eezinedine")
-            .blur()
 
         cy.contains(usernameHaveLessThanFourCharactersErrorString).should('not.exist')
+
+        cy.get('[data-testid="password"]')
+            .type("threezinedine")
+
+        cy.get('[data-testid="submit"]')
+            .click()
     })
 })
