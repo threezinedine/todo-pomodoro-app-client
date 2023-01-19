@@ -16,6 +16,8 @@ describe("CustomForm Testing", () => {
     const taskLabel = "Task's name"
     const submitButtonTestId= "submit"
     const testTaskName = "threezinedine"
+    const testTaskNameWithLessThanFourCharacters = "thre"
+    const valueIsLessThanFourCharactersErrorString = "The value has less than 4 characters."
 
     describe("Test when normal input is created", () => {
         beforeEach(() => {
@@ -25,6 +27,10 @@ describe("CustomForm Testing", () => {
                         {
                             name: taskName,
                             label: taskLabel,
+                            errors: [{
+                                validator: (value: string): boolean => (value.length <= 4),
+                                message: valueIsLessThanFourCharactersErrorString,
+                            }],
                         }
                     ]}
                     onSubmit={mockFunc}
@@ -47,10 +53,20 @@ describe("CustomForm Testing", () => {
 
             expect(mockFunc).toHaveBeenCalledWith([{
                 name: taskName,
-                label: taskLabel,
                 value: testTaskName,
             }])
 
+        })
+
+        it('should have the error message when the validator returns true', () => {
+            const taskInput = screen.getByTestId(taskName)
+
+            userEvent.type(taskInput, testTaskNameWithLessThanFourCharacters)
+            userEvent.tab()
+
+            const errorMessage = screen.getByText(valueIsLessThanFourCharactersErrorString)
+
+            expect(errorMessage).toBeInTheDocument()
         })
     })
 
@@ -65,6 +81,7 @@ describe("CustomForm Testing", () => {
                             label: taskLabel,
                             value: "",
                             password: true,
+                            errors: [],
                         }
                     ]}
                     onSubmit={mockFunc}

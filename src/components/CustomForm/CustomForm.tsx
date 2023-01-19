@@ -5,21 +5,22 @@ import {
 } from 'react-materialize'
 
 import CustomFormProps from "./CustomFormProps"
+import CustomFormResponseProps from "./CustomFormResponseProps"
 import CustomFormField, {
     CustomFormFieldProps,
 } from "./CustomFormField"
 import styles from './CustomForm.module.scss'
+import CustomFormState from "./CustomFormState"
+import CustomFormFieldError from "./CustomFormField/CustomFormFieldError"
 
 
-export default class CustomForm extends React.Component<CustomFormProps> {
-    state = {
-        fields: []
-    }
-
+export default class CustomForm extends React.Component<CustomFormProps, CustomFormState> {
     constructor(props: CustomFormProps) {
         super(props)
         const { fields } = props
-        const newFields = JSON.parse(JSON.stringify(fields))
+        const newFields: CustomFormFieldProps[] = [
+            ...fields,
+        ]
 
         newFields.forEach((field: CustomFormFieldProps): void => {
             if (field.value === undefined) {
@@ -27,7 +28,9 @@ export default class CustomForm extends React.Component<CustomFormProps> {
             }
         })
 
-        this.state.fields = newFields
+        this.state = {
+            fields: newFields
+        }
     }
 
     handleSubmitAction = (): void => {
@@ -35,13 +38,24 @@ export default class CustomForm extends React.Component<CustomFormProps> {
 
         const { fields } = this.state
 
-        onSubmit(fields)
+        const responseFields = fields.reduce((prev: CustomFormResponseProps[], curr: CustomFormFieldProps) => {
+            prev.push({
+                name: curr.name,
+                value: curr.value || "",
+            })
+
+            return prev 
+        }, [])
+
+        onSubmit(responseFields)
     }
 
     onValueChange = (name: string, value: string): void => {
         const { fields } = this.state
 
-        const newFields = JSON.parse(JSON.stringify(fields))
+        const newFields: CustomFormFieldProps[] = [
+            ...fields
+        ]
 
         newFields.forEach((field: CustomFormFieldProps): void => {
             if (field.name === name) {
