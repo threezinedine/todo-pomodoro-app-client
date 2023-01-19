@@ -1,8 +1,29 @@
 import React from 'react'
 
+import { 
+    CustomForm,
+} from './components'
+
+
 function App() {
     return (
-        <div>Hello world</div>
+        <CustomForm 
+            fields={[
+                {
+                    name: "username",
+                    label: "Username",
+                    value: "",
+                },
+                {
+                    name: "password",
+                    label: "Password",
+                    value: "",
+                }
+            ]}
+            onSubmit={(data) => {
+                console.log(data) 
+            }}
+        />
     )
 }
 

@@ -1,6 +1,4 @@
 import CustomForm from "./CustomForm"
 
 
-export {
-    CustomForm,
-}
+export default CustomForm
