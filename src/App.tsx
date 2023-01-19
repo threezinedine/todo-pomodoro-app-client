@@ -25,6 +25,10 @@ function App() {
                     {
                         name: "password",
                         label: "Password",
+                        errors: [{
+                            message: "The password should have at least 4 characters.",
+                            validator: (value): boolean => value.length <= 4,
+                        }],
                         password: true,
                     }
                 ]}

@@ -1,5 +1,7 @@
 describe('Login Screen Test', () => {
     const usernameHaveLessThanFourCharactersErrorString = "The username should have at least 4 characters."
+    const passwordHaveLessThanFourCharactersErrorString = "The password should have at least 4 characters."
+
 
     it('should receive username and password then can be submitted', () => {
         cy.visit('http://localhost:3000')
@@ -10,7 +12,8 @@ describe('Login Screen Test', () => {
             .type("thr")
             .blur()
 
-        cy.contains(usernameHaveLessThanFourCharactersErrorString).should('exist')
+        cy.contains(usernameHaveLessThanFourCharactersErrorString)
+            .should('exist')
 
         cy.get('[data-testid="submit"]')
             .click()
@@ -25,10 +28,31 @@ describe('Login Screen Test', () => {
         cy.get('[data-testid="username"]')
             .type("eezinedine")
 
-        cy.contains(usernameHaveLessThanFourCharactersErrorString).should('not.exist')
+        cy.contains(usernameHaveLessThanFourCharactersErrorString)
+            .should('not.exist')
 
         cy.get('[data-testid="password"]')
-            .type("threezinedine")
+            .type("thr")
+            .blur()
+
+        cy.contains(passwordHaveLessThanFourCharactersErrorString)
+            .should('exist')
+
+        cy.get('[data-testid="submit"]')
+            .click()
+
+        cy.contains("Login error").should('exist')
+
+        cy.wait(3000). 
+            then(() => {
+                cy.contains("Login error").should('not.exist')
+        })
+
+        cy.get('[data-testid="password"]')
+            .type("eezinedine")
+            .blur()
+
+        cy.contains(passwordHaveLessThanFourCharactersErrorString).should('not.exist')
 
         cy.get('[data-testid="submit"]')
             .click()
