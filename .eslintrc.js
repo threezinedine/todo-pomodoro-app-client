@@ -23,6 +23,7 @@ module.exports = {
     plugins: [
         'react'
     ],
+    ignorePatterns: ["**/*.css", "**/*.scss"],
     rules: {
         indent: ["error", 4],
         semi: [2, "never"],

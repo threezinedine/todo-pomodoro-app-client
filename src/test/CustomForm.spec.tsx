@@ -13,6 +13,9 @@ import {
 describe("CustomForm Testing", () => {
     const mockFunc = jest.fn()
     const taskName = "taskName"
+    const taskLabel = "Task's name"
+    const submitButtonTestId= "submit"
+    const testTaskName = "threezinedine"
 
     describe("Test when normal input is created", () => {
         beforeEach(() => {
@@ -21,7 +24,7 @@ describe("CustomForm Testing", () => {
                     fields={[
                         {
                             name: taskName,
-                            label: "Task's name",
+                            label: taskLabel,
                         }
                     ]}
                     onSubmit={mockFunc}
@@ -30,22 +33,22 @@ describe("CustomForm Testing", () => {
         })
 
         it("should contain the task'name when it's passed to the form as an attribute.", () => {
-            const taskInput = screen.getByTestId("taskName")
+            const taskInput = screen.getByTestId(taskName)
 
             expect(taskInput).toBeInTheDocument()
         })
 
         it("should call the onSubmit Function with return data when click on submit button", () => {
-            const taskInput = screen.getByTestId("taskName")
-            const submitButton = screen.getByTestId("submit")
+            const taskInput = screen.getByTestId(taskName)
+            const submitButton = screen.getByTestId(submitButtonTestId)
 
-            userEvent.type(taskInput, "threezinedine")
+            userEvent.type(taskInput, testTaskName)
             userEvent.click(submitButton)
 
             expect(mockFunc).toHaveBeenCalledWith([{
-                name: "taskName",
-                label: "Task's name",
-                value: "threezinedine",
+                name: taskName,
+                label: taskLabel,
+                value: testTaskName,
             }])
 
         })
@@ -59,7 +62,7 @@ describe("CustomForm Testing", () => {
                     fields={[
                         {
                             name: taskName,
-                            label: "Task's name",
+                            label: taskLabel,
                             value: "",
                             password: true,
                         }
@@ -70,7 +73,7 @@ describe("CustomForm Testing", () => {
         })
 
         it('should have the type password if the password attribute is set to true', () => {
-            const taskInput = screen.getByTestId("taskName")  
+            const taskInput = screen.getByTestId(taskName)  
 
             expect(taskInput).toHaveAttribute("type", "password")
         })

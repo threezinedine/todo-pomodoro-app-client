@@ -25,7 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "e2e": "cypress open",
-    "eslint": "eslint src/test/* src/components/**/* src/pages/**/* cypress/e2e/*",
+    "eslint": "eslint src/test/* src/components/**/* src/pages/**/* cypress/e2e/* --ext .ts,.tsx",
     "eslint:watch": "nodemon --watch src --watch cypress -e ts,tsx,json,js  --exec yarn eslint"
   },
   "browserslist": {
