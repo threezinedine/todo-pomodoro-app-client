@@ -2,6 +2,7 @@ import React from "react"
 
 import CustomFormFieldError from "./CustomFormFieldError"
 import CustomFormFieldFullProps from "./CustomFormFieldFullProps"
+import styles from './CustomFormField.module.scss'
 
 
 export default class CustomFormField extends React.Component<CustomFormFieldFullProps> {
@@ -37,7 +38,7 @@ export default class CustomFormField extends React.Component<CustomFormFieldFull
         const type = password ? "password" : "text"
 
         return (
-            <div>
+            <div className={styles.wrapper}>
                 <label htmlFor={name}>{label}</label>
                 <input 
                     id={name}
@@ -50,7 +51,7 @@ export default class CustomFormField extends React.Component<CustomFormFieldFull
                     }}
                     onBlur={this.validateResult}
                     type={type} />
-                <div>
+                <div className={errorMessage !== "" ? styles.error : ""}>
                     { errorMessage } 
                 </div>
             </div>

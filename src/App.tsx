@@ -17,18 +17,34 @@ function App() {
                     {
                         name: "username",
                         label: "Username",
-                        errors: [{
-                            message: "The username should have at least 4 characters.",
-                            validator: (value): boolean => value.length <= 4,
-                        }]
+                        errors: [
+                            {
+                                message: "The username should have at least 4 characters.",
+                                validator: (value): boolean => value.length <= 4,
+                            }, 
+                            {
+                                message: "The username should have maximum 50 characters.",
+                                validator: (value): boolean => value.length > 50,
+                            },
+                            {
+                                message: "The username cannot contain the specical characters.",
+                                validator: (value): boolean => /[!@#$%^&*(),.?":{}|<>]/.test(value)
+                            },
+                        ]
                     },
                     {
                         name: "password",
                         label: "Password",
-                        errors: [{
-                            message: "The password should have at least 4 characters.",
-                            validator: (value): boolean => value.length <= 4,
-                        }],
+                        errors: [
+                            {
+                                message: "The password should have at least 4 characters.",
+                                validator: (value): boolean => value.length <= 4,
+                            },
+                            {
+                                message: "The password should have maximum 50 characters.",
+                                validator: (value): boolean => value.length > 50,
+                            }
+                        ],
                         password: true,
                     }
                 ]}
