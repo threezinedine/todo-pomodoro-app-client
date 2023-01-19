@@ -1,60 +1,68 @@
 describe('Login Screen Test', () => {
     const usernameHaveLessThanFourCharactersErrorString = "The username should have at least 4 characters."
     const passwordHaveLessThanFourCharactersErrorString = "The password should have at least 4 characters."
+    const loginErrorMessage = "Login error"
 
 
     it('should receive username and password then can be submitted', () => {
         cy.visit('http://localhost:3000')
 
-        cy.contains(usernameHaveLessThanFourCharactersErrorString).should('not.exist')
+        checkTextNonExist(usernameHaveLessThanFourCharactersErrorString)
+        writeOnUsernameThenBlur("thr")
+        checkTextExist(usernameHaveLessThanFourCharactersErrorString)
 
-        cy.get('[data-testid="username"]')
-            .type("thr")
-            .blur()
-
-        cy.contains(usernameHaveLessThanFourCharactersErrorString)
-            .should('exist')
-
-        cy.get('[data-testid="submit"]')
-            .click()
-
-        cy.contains("Login error").should('exist')
+        submitForm()
+        checkTextExist(loginErrorMessage)
 
         cy.wait(3000)
             .then(() => {
-                cy.contains("Login error").should('not.exist')
+                checkTextNonExist(loginErrorMessage)
             })
 
-        cy.get('[data-testid="username"]')
-            .type("eezinedine")
+        writeOnUsernameThenBlur("eezinedine")
+        checkTextNonExist(usernameHaveLessThanFourCharactersErrorString)
 
-        cy.contains(usernameHaveLessThanFourCharactersErrorString)
-            .should('not.exist')
+        writeOnPasswordThenBlur("thr")
 
-        cy.get('[data-testid="password"]')
-            .type("thr")
-            .blur()
+        checkTextExist(passwordHaveLessThanFourCharactersErrorString)
 
-        cy.contains(passwordHaveLessThanFourCharactersErrorString)
-            .should('exist')
-
-        cy.get('[data-testid="submit"]')
-            .click()
-
-        cy.contains("Login error").should('exist')
+        submitForm()
+        checkTextExist(loginErrorMessage)
 
         cy.wait(3000). 
             then(() => {
-                cy.contains("Login error").should('not.exist')
+                checkTextNonExist(loginErrorMessage)
         })
 
-        cy.get('[data-testid="password"]')
-            .type("eezinedine")
+        writeOnPasswordThenBlur("eezinedine")
+
+        checkTextNonExist(passwordHaveLessThanFourCharactersErrorString)
+
+        submitForm()
+    })
+
+    function checkTextExist(text: string) {
+        cy.contains(text).should('exist')
+    }
+
+    function checkTextNonExist(text: string) {
+        cy.contains(text).should('not.exist')
+    }
+
+    function writeOnUsernameThenBlur(text: string) {
+        cy.get('[data-testid="username"]')
+            .type(text)
             .blur()
+    }
 
-        cy.contains(passwordHaveLessThanFourCharactersErrorString).should('not.exist')
+    function writeOnPasswordThenBlur(text: string) {
+        cy.get('[data-testid="password"]')
+            .type(text)
+            .blur()
+    }
 
+    function submitForm() {
         cy.get('[data-testid="submit"]')
             .click()
-    })
+    }
 })
