@@ -13,10 +13,14 @@ export default class CustomFormField extends React.Component<CustomFormFieldFull
         super(props)
     }
 
+    onFocus = (): void => {
+        this.setState({
+            errorMessage: ""
+        })
+    }
+
     validateResult = (): void => {
         const { value, errors = [] } = this.props
-
-        console.log(errors)
 
         errors.forEach((error: CustomFormFieldError):void => {
             if (error.validator(value || "")) {
@@ -40,6 +44,7 @@ export default class CustomFormField extends React.Component<CustomFormFieldFull
                     data-testid={name}
                     name={name}
                     value={value}
+                    onFocus={this.onFocus}
                     onChange={(evt): void => {
                         onValueChange(name, evt.target.value)
                     }}

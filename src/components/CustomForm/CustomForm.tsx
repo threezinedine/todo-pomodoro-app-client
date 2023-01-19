@@ -11,7 +11,6 @@ import CustomFormField, {
 } from "./CustomFormField"
 import styles from './CustomForm.module.scss'
 import CustomFormState from "./CustomFormState"
-import CustomFormFieldError from "./CustomFormField/CustomFormFieldError"
 
 
 export default class CustomForm extends React.Component<CustomFormProps, CustomFormState> {

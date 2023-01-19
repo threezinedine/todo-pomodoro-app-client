@@ -14,7 +14,7 @@ function App() {
                     label: "Username",
                     errors: [{
                         message: "The username should have at least 4 characters.",
-                        validator: (value) => value.length <= 4,
+                        validator: (value): boolean => value.length <= 4,
                     }]
                 },
                 {
@@ -23,7 +23,7 @@ function App() {
                     password: true,
                 }
             ]}
-            onSubmit={(data) => {
+            onSubmit={(data):void => {
                 console.log(data) 
             }}
         />

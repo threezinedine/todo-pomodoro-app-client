@@ -68,6 +68,20 @@ describe("CustomForm Testing", () => {
 
             expect(errorMessage).toBeInTheDocument()
         })
+
+        it('should have the error message after the bluring but disappear after focus again', () => {
+            const taskInput = screen.getByTestId(taskName)
+
+            userEvent.type(taskInput, "thr")
+            userEvent.tab()
+
+            userEvent.type(taskInput, "eezinedine")
+            userEvent.tab()
+
+            const errorMessage = screen.queryByText(valueIsLessThanFourCharactersErrorString)
+
+            expect(errorMessage).toBeNull()
+        })
     })
 
     
