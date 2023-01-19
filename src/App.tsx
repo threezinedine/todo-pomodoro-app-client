@@ -12,12 +12,11 @@ function App() {
                 {
                     name: "username",
                     label: "Username",
-                    value: "",
                 },
                 {
                     name: "password",
                     label: "Password",
-                    value: "",
+                    password: true,
                 }
             ]}
             onSubmit={(data) => {

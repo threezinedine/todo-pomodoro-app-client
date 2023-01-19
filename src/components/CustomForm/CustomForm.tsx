@@ -8,6 +8,7 @@ import CustomFormProps from "./CustomFormProps"
 import CustomFormField, {
     CustomFormFieldProps,
 } from "./CustomFormField"
+import styles from './CustomForm.module.scss'
 
 
 export default class CustomForm extends React.Component<CustomFormProps> {
@@ -58,11 +59,11 @@ export default class CustomForm extends React.Component<CustomFormProps> {
         const { fields } = this.state
 
         return (
-            <div>
+            <div className={styles.wrapper}>
                 {
                     fields.map((field: CustomFormFieldProps, index: number): React.ReactNode => (
                         <CustomFormField 
-                            field={field}
+                            {...field}
                             onValueChange={this.onValueChange}
                             key={index}
                         />

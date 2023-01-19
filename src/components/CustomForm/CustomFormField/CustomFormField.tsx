@@ -13,14 +13,14 @@ export default class CustomFormField extends React.Component<CustomFormFieldFull
     }
 
     render(): React.ReactNode {
-        console.log(this.props)
-        const { field, onValueChange } = this.props
+        const { name, label, password = false, onValueChange } = this.props
 
         return (
             <TextInput
-                data-testid={field.name}
-                label={field.label}
-                onChange={(evt): void => onValueChange(field.name, evt.target.value)}
+                data-testid={name}
+                label={label}
+                password={password}
+                onChange={(evt): void => onValueChange(name, evt.target.value)}
             />
         )
     }
