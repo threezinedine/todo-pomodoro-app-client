@@ -11,6 +11,8 @@ import CustomFormField, {
 } from "./CustomFormField"
 import styles from './CustomForm.module.scss'
 import CustomFormState from "./CustomFormState"
+import CustomFormSubmitErrorData from "./CustomFormSubmitErrorData"
+import CustomFormFieldError from "./CustomFormField/CustomFormFieldError"
 
 
 export default class CustomForm extends React.Component<CustomFormProps, CustomFormState> {
@@ -33,7 +35,11 @@ export default class CustomForm extends React.Component<CustomFormProps, CustomF
     }
 
     handleSubmitAction = (): void => {
-        const { onSubmit } = this.props
+        const { 
+            onSubmit, 
+            onSubmitError = (data):void => {
+                console.log(data)
+            } } = this.props
 
         const { fields } = this.state
 
@@ -46,7 +52,24 @@ export default class CustomForm extends React.Component<CustomFormProps, CustomF
             return prev 
         }, [])
 
-        onSubmit(responseFields)
+        const errors: CustomFormSubmitErrorData = fields.reduce((prev: CustomFormSubmitErrorData, curr: CustomFormFieldProps) => {
+            const { value = "", errors = [] } = curr 
+            errors.forEach((error: CustomFormFieldError) => {
+                if (error.validator(value)) {
+                    prev.error.push(error.message)
+                }
+            })
+            return prev
+        }, {
+            success: [],
+            error: [],
+        })
+
+        if (errors.error.length !== 0) {
+            onSubmitError(errors)
+        } else {
+            onSubmit(responseFields)
+        }
     }
 
     onValueChange = (name: string, value: string): void => {

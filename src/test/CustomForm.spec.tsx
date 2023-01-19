@@ -12,6 +12,7 @@ import {
 
 describe("CustomForm Testing", () => {
     const mockFunc = jest.fn()
+    const mockOnSubmitErrorFunc = jest.fn()
     const taskName = "taskName"
     const taskLabel = "Task's name"
     const submitButtonTestId= "submit"
@@ -34,6 +35,7 @@ describe("CustomForm Testing", () => {
                         }
                     ]}
                     onSubmit={mockFunc}
+                    onSubmitError={mockOnSubmitErrorFunc}
                 />
             ) 
         })
@@ -81,6 +83,21 @@ describe("CustomForm Testing", () => {
             const errorMessage = screen.queryByText(valueIsLessThanFourCharactersErrorString)
 
             expect(errorMessage).toBeNull()
+        })
+
+        it('should call the onSubmitError function when there is the error in the form', () => {
+            const taskInput = screen.getByTestId(taskName)
+            const submitButton = screen.getByTestId(submitButtonTestId)
+
+            userEvent.type(taskInput, "thr")
+            userEvent.tab()
+
+            userEvent.click(submitButton)
+
+            expect(mockOnSubmitErrorFunc).toHaveBeenCalledWith({
+                success: [],
+                error: [valueIsLessThanFourCharactersErrorString],
+            })
         })
     })
 

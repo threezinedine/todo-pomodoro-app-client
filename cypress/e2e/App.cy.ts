@@ -17,6 +17,11 @@ describe('Login Screen Test', () => {
 
         cy.contains("Login error").should('exist')
 
+        cy.wait(3000)
+            .then(() => {
+                cy.contains("Login error").should('not.exist')
+            })
+
         cy.get('[data-testid="username"]')
             .type("eezinedine")
 
