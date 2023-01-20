@@ -5,6 +5,7 @@ import {
 import { 
     connect,
 } from "react-redux"
+import axios from 'axios'
 
 import { 
     CustomForm,
@@ -83,9 +84,40 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
                             password: true,
                         },
                     ]}
-                    onSubmit={(data):void => {
-                        console.log(data) 
-                        dispatch(changeLoginState(true))
+                    onSubmit={(fields):void => {
+                        const username: string = fields.reduce((prev, field) => {
+                            if (field.name === "username")
+                                return field.value
+                            return prev
+                        }, "")
+
+                        const password: string = fields.reduce((prev, field) => {
+                            if (field.name === "password")
+                                return field.value
+                            return prev
+                        }, "")
+
+                        axios({
+                            method: 'post',
+                            url: "http://localhost:8000/users/login",
+                            data: {
+                                username, 
+                                password,
+                            }
+                        })
+                            .then(response => {
+                                if (response.status === 200) {
+                                    dispatch(changeLoginState(true))
+                                } 
+                                return response.data
+                            })
+                            .catch(err => {
+                                this.setMessage("Unauthorized")
+
+                                setTimeout(() => {
+                                    this.setMessage("")
+                                }, 1000)
+                            })
                     }}
                     onSubmitError={(): void => {
                         this.setMessage("Login error")    
