@@ -14,11 +14,15 @@ describe("CustomForm Testing", () => {
     const mockFunc = jest.fn()
     const mockOnSubmitErrorFunc = jest.fn()
     const taskName = "taskName"
+    const taskValid = "taskValid"
     const taskLabel = "Task's name"
+    const taskValidLabel = "Task's Name Valid"
     const submitButtonTestId= "submit"
     const testTaskName = "threezinedine"
+    const testWrongName = "threezine"
     const testTaskNameWithLessThanFourCharacters = "thre"
     const valueIsLessThanFourCharactersErrorString = "The value has less than 4 characters."
+    const valueDoesNotMatchErrorString = "Value does not match."
 
     describe("Test when normal input is created", () => {
         beforeEach(() => {
@@ -124,6 +128,79 @@ describe("CustomForm Testing", () => {
             const taskInput = screen.getByTestId(taskName)  
 
             expect(taskInput).toHaveAttribute("type", "password")
+        })
+    })
+
+    describe("test two value must match", () => {
+        beforeEach(() => {
+            render(
+                <CustomForm 
+                    fields={[
+                        {
+                            name: taskName,
+                            label: taskLabel,
+                            value: "",
+                            password: true,
+                            errors: [],
+                        },
+                        {
+                            name: taskValid,
+                            label: taskValidLabel,
+                            value: "",
+                            password: true,
+                            errors: [
+                                {
+                                    message: valueDoesNotMatchErrorString,
+                                    validator: (value, fields): boolean => {
+                                        let result = false 
+
+                                        fields.forEach((fields): void => {
+                                            if (fields.name === taskName) {
+                                                result = fields.value !== value 
+                                            }
+                                        })
+
+                                        return result
+                                    }
+                                }
+                            ],
+                        }
+                    ]}
+                    onSubmit={mockFunc}
+                    onSubmitError={mockOnSubmitErrorFunc}
+                />
+            ) 
+        })
+
+        it('can be submitted when 2 fields have the same value', () => {
+            const taskInput = screen.getByTestId(taskName)
+            const taskInputValid = screen.getByTestId(taskValid)
+            const submitButton = screen.getByTestId(submitButtonTestId)
+
+            userEvent.type(taskInput, testTaskName)
+            userEvent.type(taskInputValid, testTaskName)
+
+            userEvent.click(submitButton)
+
+            expect(mockFunc).toHaveBeenCalled()
+        })
+
+        it('cannot be submitted when 2 fields do not have the same value', () => {
+            const taskInput = screen.getByTestId(taskName)
+            const taskInputValid = screen.getByTestId(taskValid)
+            const submitButton = screen.getByTestId(submitButtonTestId)
+
+            userEvent.type(taskInput, testTaskName)
+            userEvent.type(taskInputValid, testWrongName)
+
+            userEvent.click(submitButton)
+
+            expect(mockOnSubmitErrorFunc).toHaveBeenCalledWith({
+                success: [],
+                error: [
+                    valueDoesNotMatchErrorString,
+                ]
+            })
         })
     })
 

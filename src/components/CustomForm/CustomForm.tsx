@@ -55,7 +55,7 @@ export default class CustomForm extends React.Component<CustomFormProps, CustomF
         const errors: CustomFormSubmitErrorData = fields.reduce((prev: CustomFormSubmitErrorData, curr: CustomFormFieldProps) => {
             const { value = "", errors = [] } = curr 
             errors.forEach((error: CustomFormFieldError) => {
-                if (error.validator(value)) {
+                if (error.validator(value, this.state.fields)) {
                     prev.error.push(error.message)
                 }
             })
@@ -100,6 +100,7 @@ export default class CustomForm extends React.Component<CustomFormProps, CustomF
                     fields.map((field: CustomFormFieldProps, index: number): React.ReactNode => (
                         <CustomFormField 
                             {...field}
+                            fields={fields}
                             onValueChange={this.onValueChange}
                             key={index}
                         />

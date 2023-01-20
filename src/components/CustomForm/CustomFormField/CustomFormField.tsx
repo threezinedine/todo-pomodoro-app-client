@@ -21,10 +21,10 @@ export default class CustomFormField extends React.Component<CustomFormFieldFull
     }
 
     validateResult = (): void => {
-        const { value, errors = [] } = this.props
+        const { fields, value, errors = [] } = this.props
 
         errors.forEach((error: CustomFormFieldError):void => {
-            if (error.validator(value || "")) {
+            if (error.validator(value || "", fields)) {
                 this.setState({
                     errorMessage: error.message
                 })
