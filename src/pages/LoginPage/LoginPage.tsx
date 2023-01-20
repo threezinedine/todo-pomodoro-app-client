@@ -108,6 +108,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
                             .then(response => {
                                 if (response.status === 200) {
                                     dispatch(changeLoginState(true))
+                                    localStorage.setItem("token", response.data.token)
                                 } 
                                 return response.data
                             })

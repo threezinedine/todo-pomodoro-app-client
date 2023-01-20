@@ -7,13 +7,29 @@ import {
 } from "react-redux"
 
 import HomePageProps from "./HomePageProps"
-import HomePageContext from "./HomePageContext"
+import HomePageContext, {
+    HomePageDataContext,
+} from "./HomePageContext"
 import {
-    LoginState
+    LoginState,
 } from '../../stores'
+import { 
+    changeLoginState,
+} from "../../stores/login"
 
 
 class HomePage extends React.Component<HomePageProps, HomePageContext> {
+    componentDidMount() {
+        const token: string | null = localStorage.getItem("token")
+        const { dispatch } = this.props
+
+        if (token === null) {
+            dispatch(changeLoginState(false))
+        } else {
+            dispatch(changeLoginState(true))
+        }
+    }
+
     render(): React.ReactNode {
         const { loginState } = this.props
         
@@ -30,7 +46,7 @@ class HomePage extends React.Component<HomePageProps, HomePageContext> {
 }
 
 
-const homePageMap = (state: LoginState): HomePageContext => {
+const homePageMap = (state: LoginState): HomePageDataContext => {
     return {
         loginState: state.loginState
     }
