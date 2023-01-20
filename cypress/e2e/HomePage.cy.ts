@@ -81,8 +81,29 @@ describe("The home page testing", () => {
             })
     })
 
+    it('should not navigate to login url when the token is verified', () => {
+        cy.intercept(
+            {
+                method: 'POST',
+                url: '/users/verified',
+            },
+            {
+                statusCode: 200,
+            }
+        )
+
+        window.localStorage.setItem("token", "test_token")
+        cy.visit(homeUrl)
+
+        cy.wait(100)
+            .then(() => {
+                validRoute(homeUrl)
+            })
+    })
+
     const submitForm = () => {
         cy.get('[data-testid="submit"]')
             .click()
     }
+
 })
