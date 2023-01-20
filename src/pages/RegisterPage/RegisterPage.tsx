@@ -80,7 +80,7 @@ export default class RegisterPage extends React.Component {
                     onSubmit={(data): void => {
                         console.log(data)
                     }}
-                    onSubmitError={(data): void => {
+                    onSubmitError={(): void => {
                         this.setMessage("Register error")
 
                         setTimeout(() => {
