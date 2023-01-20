@@ -1,3 +1,10 @@
+import {
+    checkTextExist,
+    checkTextNonExist,
+    typeThenBlurByTestId,
+} from '../utils'
+
+
 describe('Login Screen Test', () => {
     const usernameHaveLessThanFourCharactersErrorString = "The username should have at least 4 characters."
     const usernameHaveMoreThanFiftyCharactersErrorString = "The username should have maximum 50 characters." 
@@ -18,6 +25,10 @@ describe('Login Screen Test', () => {
     const waitingTime = 1000
 
 
+    const usernameTestId = "username"
+    const passwordTestId = "password"
+
+
     it('should receive username and password then can be submitted', () => {
         cy.visit('http://localhost:3000/login')
 
@@ -25,13 +36,13 @@ describe('Login Screen Test', () => {
         testLoginErrorWithUsernameInput(moreThanFiftyCharactersUsername, usernameHaveMoreThanFiftyCharactersErrorString)
         testLoginErrorWithUsernameInput(containTheSpecialCharacterUsername, usernameCannotNotContainTheSpecialCharacter)
 
-        writeOnUsernameThenBlur(username)
+        typeThenBlurByTestId(username, usernameTestId)
         checkTextNonExist(usernameCannotNotContainTheSpecialCharacter)
 
         testLoginErrorWithPasswordInput(lessThanFourCharactersPassword, passwordHaveLessThanFourCharactersErrorString)
         testLoginErrorWithPasswordInput(moreThanFiftyCharactersPassword, passwordHaveMoreThanFiftyCharactersErrorString)
 
-        writeOnPasswordThenBlur(password)
+        typeThenBlurByTestId(password, passwordTestId)
 
         checkTextNonExist(moreThanFiftyCharactersPassword)
 
@@ -45,13 +56,13 @@ describe('Login Screen Test', () => {
         testLoginErrorWithUsernameInput(moreThanFiftyCharactersUsername, usernameHaveMoreThanFiftyCharactersErrorString, registerErrorMessage)
         testLoginErrorWithUsernameInput(containTheSpecialCharacterUsername, usernameCannotNotContainTheSpecialCharacter, registerErrorMessage)
 
-        writeOnUsernameThenBlur(username)
+        typeThenBlurByTestId(username, usernameTestId)
         checkTextNonExist(usernameCannotNotContainTheSpecialCharacter)
 
         testLoginErrorWithPasswordInput(lessThanFourCharactersPassword, passwordHaveLessThanFourCharactersErrorString, registerErrorMessage)
         testLoginErrorWithPasswordInput(moreThanFiftyCharactersPassword, passwordHaveMoreThanFiftyCharactersErrorString, registerErrorMessage)
 
-        writeOnPasswordThenBlur(password)
+        typeThenBlurByTestId(password, passwordTestId)
         checkTextNonExist(moreThanFiftyCharactersPassword)
 
         writeOnPasswordValidatorThenBlur(wrongPassword)
@@ -97,14 +108,6 @@ describe('Login Screen Test', () => {
             .then(() => {
                 checkTextNonExist(submitError)
             })
-    }
-
-    const checkTextExist = (text: string): void => {
-        cy.contains(text).should('exist')
-    }
-
-    const checkTextNonExist = (text: string): void => {
-        cy.contains(text).should('not.exist')
     }
 
     const writeOnUsernameThenBlur = (text: string): void => {

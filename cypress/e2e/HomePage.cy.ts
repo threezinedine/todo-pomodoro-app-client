@@ -1,4 +1,24 @@
+import {
+    checkTextExist,
+    checkTextNonExist,
+    typeThenBlurByTestId,
+    validRoute,
+} from '../utils'
+
+
 describe("The home page testing", () => {
+    const usernameTestId = "username"
+    const passwordTestId = "password"
+
+    const username = "threezinedine"
+    const password = "threezinedine"
+
+    const unauthorizedErrorMessage = "Unauthorized"
+    const waitingTime = 1000
+
+    const homeUrl = "http://localhost:3000/"
+    const loginUrl = "http://localhost:3000/login"
+
     it('should navigate to the login at the fist time access to home route', () => {
         cy.intercept(
             {
@@ -17,20 +37,16 @@ describe("The home page testing", () => {
             }
         )
 
-        cy.visit("http://localhost:3000")
+        cy.visit(homeUrl)
 
-        cy.url().should('eq', 'http://localhost:3000/login')
+        validRoute(loginUrl)
 
-        cy.get('[data-testid="username"]')
-            .type("threezinedine")
+        typeThenBlurByTestId(username, usernameTestId)
+        typeThenBlurByTestId(password, passwordTestId)
 
-        cy.get('[data-testid="password"]')
-            .type("threezinedine")
+        submitForm()
 
-        cy.get('[data-testid="submit"]')
-            .click()
-
-        cy.url().should('eq', 'http://localhost:3000/')
+        validRoute(homeUrl)
     })
 
     it('should cannot login when the response from server is not 200', () => {
@@ -47,26 +63,26 @@ describe("The home page testing", () => {
             }
         )
 
-        cy.visit("http://localhost:3000")
+        cy.visit(homeUrl)
 
-        cy.url().should('eq', 'http://localhost:3000/login')
+        validRoute(loginUrl)
 
-        cy.get('[data-testid="username"]')
-            .type("threezinedine")
+        typeThenBlurByTestId(username, usernameTestId)
+        typeThenBlurByTestId(password, passwordTestId)
+        submitForm()
 
-        cy.get('[data-testid="password"]')
-            .type("threezinedine")
+        validRoute(loginUrl)
 
-        cy.get('[data-testid="submit"]')
-            .click()
+        checkTextExist(unauthorizedErrorMessage)
 
-        cy.url().should('eq', 'http://localhost:3000/login')
-
-        cy.contains("Unauthorized").should('exist')
-
-        cy.wait(1000)
+        cy.wait(waitingTime)
             .then(() => {
-                cy.contains("Unauthorized").should('not.exist')
+                checkTextNonExist(unauthorizedErrorMessage)
             })
     })
+
+    const submitForm = () => {
+        cy.get('[data-testid="submit"]')
+            .click()
+    }
 })

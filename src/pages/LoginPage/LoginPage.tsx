@@ -111,7 +111,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
                                 } 
                                 return response.data
                             })
-                            .catch(err => {
+                            .catch(() => {
                                 this.setMessage("Unauthorized")
 
                                 setTimeout(() => {
