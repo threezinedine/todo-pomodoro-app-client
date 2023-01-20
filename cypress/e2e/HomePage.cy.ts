@@ -129,7 +129,7 @@ describe("The home page testing", () => {
             })
     })
 
-    const submitForm = () => {
+    const submitForm = (): void => {
         cy.get('[data-testid="submit"]')
             .click()
     }

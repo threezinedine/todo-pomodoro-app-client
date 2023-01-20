@@ -13,7 +13,6 @@ import HomePageContext, {
 } from "./HomePageContext"
 import { 
     changeLoginState,
-    LoginState,
 } from "../../stores/login"
 import { 
     addErrorAction,
@@ -25,9 +24,9 @@ import {
 
 
 class HomePage extends React.Component<HomePageProps, HomePageContext> {
-    componentDidMount() {
+    componentDidMount(): void {
         const token: string | null = localStorage.getItem("token")
-        const { dispatch, loginState } = this.props
+        const { dispatch } = this.props
 
         if (token === null) {
             dispatch(changeLoginState(false))

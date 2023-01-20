@@ -12,7 +12,6 @@ import {
 } from "../../components"
 import { 
     changeLoginState,
-    LoginAction,
 } from "../../stores/login"
 import { 
     StoreState,
@@ -21,7 +20,6 @@ import LoginPageContext, {
     LoginPageDataContext,
 } from "./LoginPageContext"
 import LoginPageProps from "./LoginPageProps"
-import {conformsTo} from "cypress/types/lodash"
 import {
     addErrorAction,
 } from "../../stores/error"
@@ -100,7 +98,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
                                 } 
                                 return response.data
                             })
-                            .catch((err) => {
+                            .catch(() => {
                                 dispatch(addErrorAction("Unauthorized"))
 
                                 setTimeout(() => {
