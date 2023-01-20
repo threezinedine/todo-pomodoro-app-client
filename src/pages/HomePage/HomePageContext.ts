@@ -1,5 +1,5 @@
 import {
-    LoginAction,
+    StoreAction,
 } from '../../stores'
 
 
@@ -9,7 +9,7 @@ interface HomePageDataContext {
 
 
 export default interface HomePageContext extends HomePageDataContext{
-    dispatch: (action: LoginAction) => void
+    dispatch: (action: StoreAction) => void
 }
 
 

@@ -1,6 +1,6 @@
 import {
-    LoginAction,
-} from '../../stores/index'
+    StoreAction,
+} from '../../stores'
 
 
 interface LoginPageDataContext {
@@ -10,7 +10,7 @@ interface LoginPageDataContext {
 
 
 export default interface LoginPageContext extends LoginPageDataContext {
-    dispatch: (action: LoginAction) => void
+    dispatch: (action: StoreAction) => void
 }
 
 

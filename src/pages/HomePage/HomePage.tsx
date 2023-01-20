@@ -5,28 +5,53 @@ import {
 import { 
     connect,
 } from "react-redux"
+import axios from "axios"
 
 import HomePageProps from "./HomePageProps"
 import HomePageContext, {
     HomePageDataContext,
 } from "./HomePageContext"
-import {
-    LoginState,
-} from '../../stores'
 import { 
     changeLoginState,
+    LoginState,
 } from "../../stores/login"
+import { 
+    addErrorAction,
+} from "../../stores/error"
+import {StoreState} from "~/stores"
+import {
+    removeErrorAction,
+} from "../../stores/error/actions"
 
 
 class HomePage extends React.Component<HomePageProps, HomePageContext> {
     componentDidMount() {
         const token: string | null = localStorage.getItem("token")
-        const { dispatch } = this.props
+        const { dispatch, loginState } = this.props
 
         if (token === null) {
             dispatch(changeLoginState(false))
         } else {
-            dispatch(changeLoginState(true))
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/users/verified',
+                data: {
+                    token: token,
+                }
+            })
+                .then(response => {
+                    if (response.status === 200) {
+                        dispatch(changeLoginState(true))
+                    } 
+                })
+                .catch(() => {
+                    dispatch(addErrorAction("Token expired"))
+                    dispatch(changeLoginState(false))
+
+                    setTimeout(() => {
+                        dispatch(removeErrorAction())
+                    }, 1000)
+                })
         }
     }
 
@@ -46,9 +71,9 @@ class HomePage extends React.Component<HomePageProps, HomePageContext> {
 }
 
 
-const homePageMap = (state: LoginState): HomePageDataContext => {
+const homePageMap = (state: StoreState): HomePageDataContext => {
     return {
-        loginState: state.loginState
+        loginState: state.LoginReducer.loginState
     }
 }
 

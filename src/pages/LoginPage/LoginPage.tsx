@@ -12,39 +12,27 @@ import {
 } from "../../components"
 import { 
     changeLoginState,
-    LoginState,
     LoginAction,
 } from "../../stores/login"
+import { 
+    StoreState,
+} from "../../stores"
 import LoginPageContext, {
     LoginPageDataContext,
 } from "./LoginPageContext"
 import LoginPageProps from "./LoginPageProps"
+import {conformsTo} from "cypress/types/lodash"
+import {
+    addErrorAction,
+} from "../../stores/error"
+import {
+    removeErrorAction,
+} from "../../stores/error/actions"
 
 
 class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
-    state = {
-        message: "",
-        loginState: false,
-        dispatch: (action: LoginAction):void => {
-            console.log(action)
-        }
-    }
-
-    constructor(props: LoginPageProps) {
-        super(props)
-
-        console.log(this.state)
-    }
-    
-    setMessage = (value: string): void => {
-        this.setState({
-            message: value
-        })
-    }
-
     render(): React.ReactNode {
-        const { loginState, dispatch } = this.props
-        const { message } = this.state
+        const { message, loginState, dispatch } = this.props
 
         return (
             <>
@@ -112,19 +100,19 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
                                 } 
                                 return response.data
                             })
-                            .catch(() => {
-                                this.setMessage("Unauthorized")
+                            .catch((err) => {
+                                dispatch(addErrorAction("Unauthorized"))
 
                                 setTimeout(() => {
-                                    this.setMessage("")
+                                    dispatch(removeErrorAction())
                                 }, 1000)
                             })
                     }}
                     onSubmitError={(): void => {
-                        this.setMessage("Login error")    
+                        dispatch(addErrorAction("Login error"))
 
                         setTimeout(() => {
-                            this.setMessage("")
+                            dispatch(removeErrorAction())
                         }, 1000)
                     }}
                 />
@@ -140,10 +128,10 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
 }
 
 
-const mapLoginPageState = (state: LoginState): LoginPageDataContext => {
+const mapLoginPageState = (state: StoreState): LoginPageDataContext => {
     return {
-        message: "",
-        loginState: state.loginState
+        message: state.ErrorReducer.errors.join(", "),
+        loginState: state.LoginReducer.loginState
     }
 }
 

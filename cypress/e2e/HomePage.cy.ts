@@ -14,6 +14,7 @@ describe("The home page testing", () => {
     const password = "threezinedine"
 
     const unauthorizedErrorMessage = "Unauthorized"
+    const tokenExpiredErrorMessage = "Token expired"
     const waitingTime = 1000
 
     const homeUrl = "http://localhost:3000/"
@@ -98,6 +99,33 @@ describe("The home page testing", () => {
         cy.wait(100)
             .then(() => {
                 validRoute(homeUrl)
+            })
+    })
+
+    it('should navigate to login url when the token is expired', () => {
+        cy.intercept(
+            {
+                method: 'POST',
+                url: '/users/verified',
+            },
+            {
+                statusCode: 401,
+            }
+        )
+
+        window.localStorage.setItem("token", "test_token")
+        cy.visit(homeUrl)
+
+        cy.wait(waitingTime)
+            .then(() => {
+                validRoute(loginUrl)
+            })
+
+        checkTextExist(tokenExpiredErrorMessage)
+
+        cy.wait(waitingTime)
+            .then(() => {
+                checkTextNonExist(tokenExpiredErrorMessage)
             })
     })
 
