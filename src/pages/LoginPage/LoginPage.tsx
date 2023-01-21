@@ -24,7 +24,9 @@ import {
     addErrorAction,
 } from "../../stores/error"
 import {
+    addNotificationAction,
     removeErrorAction,
+    removeNotificationAction,
 } from "../../stores/error/actions"
 
 
@@ -94,7 +96,12 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
                             .then(response => {
                                 if (response.status === 200) {
                                     dispatch(changeLoginState(true))
+                                    dispatch(addNotificationAction("Login successfully"))
                                     localStorage.setItem("token", response.data.token)
+
+                                    setTimeout(() => {
+                                        dispatch(removeNotificationAction())
+                                    }, 1000)
                                 } 
                                 return response.data
                             })

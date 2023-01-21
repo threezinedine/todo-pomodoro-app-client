@@ -15,7 +15,7 @@ import WrapperProps from "./WrapperProps"
 
 class Wrapper extends React.Component<WrapperProps, WrapperContext> {
     render(): React.ReactNode {
-        const { children, errors } = this.props
+        const { children, errors, notifications } = this.props
 
         return (
             <>
@@ -24,6 +24,7 @@ class Wrapper extends React.Component<WrapperProps, WrapperContext> {
                 </div>
                 <div>
                     { errors.join(", ") }
+                    { notifications.join(", ") }
                 </div>
             </>
         )

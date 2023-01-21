@@ -25,6 +25,16 @@ const reducer = (state: ErrorState = intialState, action: StoreAction): ErrorSta
             ...state,
             errors: state.errors.slice(1)
         }
+    case ErrorActionType.ADD_NOTIFICATION:
+        return {
+            ...state,
+            notifications: [...state.notifications, action.payload]
+        }
+    case ErrorActionType.REMOVE_NOTIFICATION:
+        return {
+            ...state,
+            notifications: state.notifications.slice(1)
+        }
     default:
         return state
     }

@@ -6,7 +6,9 @@ import {
 export const enum ErrorActionType {
     ADD_ERROR = "Add error",
     REMOVE_ERROR = "Remove error",
-    CLEAR_ERROR = "Clear Error"
+    CLEAR_ERROR = "Clear error",
+    ADD_NOTIFICATION = "Add notification",
+    REMOVE_NOTIFICATION = "Remove notification",
 }
 
 
@@ -23,7 +25,16 @@ export interface ClearErrorAction extends Action {
     type: ErrorActionType.CLEAR_ERROR
 }
 
-type ErrorAction = AddErrorAction | RemoveErrorAction
+export interface AddNotificationAction extends Action {
+    type: ErrorActionType.ADD_NOTIFICATION
+    payload: string
+}
+
+export interface RemoveNotificationAction extends Action {
+    type: ErrorActionType.REMOVE_NOTIFICATION
+}
+
+type ErrorAction = AddErrorAction | RemoveErrorAction | AddNotificationAction | RemoveNotificationAction
 
 export type {
     ErrorAction

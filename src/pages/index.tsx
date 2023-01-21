@@ -16,10 +16,12 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: (
-            <AuthenRouteWrapper
-                onAuthComponent={<HomePage />}
-                offAuthRoute="/login"
-            />
+            <Wrapper>
+                <AuthenRouteWrapper
+                    onAuthComponent={<HomePage />}
+                    offAuthRoute="/login"
+                />
+            </Wrapper>
         ),
     },
     {

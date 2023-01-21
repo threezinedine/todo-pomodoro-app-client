@@ -15,6 +15,9 @@ describe("The home page testing", () => {
 
     const unauthorizedErrorMessage = "Unauthorized"
     const tokenExpiredErrorMessage = "Token expired"
+
+    const loginSuccessfullyNotificationMessage = "Login successfully"
+
     const waitingTime = 1000
 
     const homeUrl = "http://localhost:3000/"
@@ -38,6 +41,16 @@ describe("The home page testing", () => {
             }
         )
 
+        cy.intercept(
+            {
+                method: 'POST',
+                url: '/users/verified',
+            },
+            {
+                statusCode: 200,
+            }
+        )
+
         cy.visit(homeUrl)
 
         validRoute(loginUrl)
@@ -47,7 +60,17 @@ describe("The home page testing", () => {
 
         submitForm()
 
-        validRoute(homeUrl)
+        cy.wait(100)
+            .then(() => {
+                validRoute(homeUrl)
+                checkTextExist(loginSuccessfullyNotificationMessage)
+
+                cy.wait(waitingTime)
+                    .then(() => {
+                        checkTextNonExist(loginSuccessfullyNotificationMessage)
+                    })
+            })
+
     })
 
     it('should cannot login when the response from server is not 200', () => {

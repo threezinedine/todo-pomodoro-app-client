@@ -3,6 +3,8 @@ import {
     ClearErrorAction,
     ErrorActionType,
     RemoveErrorAction,
+    AddNotificationAction,
+    RemoveNotificationAction,
 } from "./constants"
 
 export const addErrorAction = (error: string): AddErrorAction => {
@@ -23,5 +25,20 @@ export const removeErrorAction = (): RemoveErrorAction => {
 export const clearErrorAction = (): ClearErrorAction => {
     return {
         type: ErrorActionType.CLEAR_ERROR
+    }
+}
+
+
+export const addNotificationAction = (notification: string): AddNotificationAction => {
+    return {
+        type: ErrorActionType.ADD_NOTIFICATION,
+        payload: notification,
+    }
+}
+
+
+export const removeNotificationAction = (): RemoveNotificationAction => {
+    return {
+        type: ErrorActionType.REMOVE_NOTIFICATION
     }
 }
