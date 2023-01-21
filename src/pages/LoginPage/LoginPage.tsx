@@ -30,7 +30,7 @@ import {
 
 class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
     render(): React.ReactNode {
-        const { message, loginState, dispatch } = this.props
+        const { loginState, dispatch } = this.props
 
         return (
             <>
@@ -114,9 +114,6 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
                         }, 1000)
                     }}
                 />
-                <div>
-                    { message }
-                </div>
                 {
                     loginState && (<Navigate to="/" replace={true} />)
                 }
@@ -128,7 +125,6 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageContext> {
 
 const mapLoginPageState = (state: StoreState): LoginPageDataContext => {
     return {
-        message: state.ErrorReducer.errors.join(", "),
         loginState: state.LoginReducer.loginState
     }
 }

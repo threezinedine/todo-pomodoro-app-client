@@ -8,6 +8,7 @@ import RegisterPage from './RegisterPage'
 import HomePage from './HomePage'
 import { 
     AuthenRouteWrapper,
+    Wrapper,
 } from './layouts'
 
 
@@ -23,11 +24,19 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: (<LoginPage />),
+        element: (
+            <Wrapper>
+                <LoginPage />
+            </Wrapper>
+        ),
     }, 
     {
         path: "/register",
-        element: (<RegisterPage />)
+        element: (
+            <Wrapper>
+                <RegisterPage />
+            </Wrapper>
+        ),
     }
 ])
 

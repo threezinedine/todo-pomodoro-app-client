@@ -5,7 +5,6 @@ import {
 
 interface LoginPageDataContext {
     loginState: boolean
-    message: string
 }
 
 
