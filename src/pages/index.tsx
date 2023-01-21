@@ -6,12 +6,20 @@ import {
 import LoginPage from "./LoginPage"
 import RegisterPage from './RegisterPage'
 import HomePage from './HomePage'
+import { 
+    AuthenRouteWrapper,
+} from './layouts'
 
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: (<HomePage />),
+        element: (
+            <AuthenRouteWrapper
+                onAuthComponent={<HomePage />}
+                offAuthRoute="/login"
+            />
+        ),
     },
     {
         path: "/login",
