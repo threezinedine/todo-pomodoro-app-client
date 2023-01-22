@@ -85,7 +85,11 @@ describe("The home page testing", () => {
         cy.get('[data-testid="logout"]')
             .click()
 
-        validRoute(loginUrl)
+        cy.wait(100)
+            .then(() => {
+                validRoute(loginUrl)
+            })
+
     })
 
     it('should navigate to login url when the token is expired', () => {
@@ -102,6 +106,13 @@ describe("The home page testing", () => {
         cy.wait(waitingTime)
             .then(() => {
                 checkTextNonExist(tokenExpiredErrorMessage)
+            })
+
+        cy.visit(homeUrl)
+
+        cy.wait(100)
+            .then(() => {
+                validRoute(loginUrl)
             })
     })
 

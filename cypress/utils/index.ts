@@ -1,4 +1,7 @@
-const tokenKey = "token"
+import { 
+    TOKEN_KEY,
+} from "../../src/constants"
+
 const testToken = "testToken"
 
 
@@ -54,10 +57,10 @@ export const setupLoginValid = (status: number): void => {
 
 export const setupExpiredToken = ():void => {
     setVerifiedToken(401)
-    window.localStorage.setItem(tokenKey, testToken)
+    window.localStorage.setItem(TOKEN_KEY, testToken)
 }
 
 export const setupValidToken = ():void => {
     setVerifiedToken(200)
-    window.localStorage.setItem(tokenKey, testToken)
+    window.localStorage.setItem(TOKEN_KEY, testToken)
 }
