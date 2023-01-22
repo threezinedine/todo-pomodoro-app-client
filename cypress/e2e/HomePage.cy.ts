@@ -82,10 +82,10 @@ describe("The home page testing", () => {
                 validRoute(homeUrl)
             })
 
-        //cy.get('[data-testid="logout"]')
-        //    .click()
+        cy.get('[data-testid="logout"]')
+            .click()
 
-        //validRoute(loginUrl)
+        validRoute(loginUrl)
     })
 
     it('should navigate to login url when the token is expired', () => {
