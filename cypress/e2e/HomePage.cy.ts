@@ -3,6 +3,10 @@ import {
     checkTextNonExist,
     typeThenBlurByTestId,
     validRoute,
+    setupValidToken,
+    setupExpiredToken,
+    setVerifiedToken,
+    setupLoginValid,
 } from '../utils'
 
 
@@ -24,32 +28,8 @@ describe("The home page testing", () => {
     const loginUrl = "http://localhost:3000/login"
 
     it('should navigate to the login at the fist time access to home route', () => {
-        cy.intercept(
-            {
-                method: 'POST',
-                url: '/users/login',
-            },
-            {
-                statusCode: 200,
-                body: {
-                    user: {
-                        userId: 1,
-                        username: "threezinedine"
-                    },
-                    token: "testing_token"
-                }
-            }
-        )
-
-        cy.intercept(
-            {
-                method: 'POST',
-                url: '/users/verified',
-            },
-            {
-                statusCode: 200,
-            }
-        )
+        setupLoginValid(200)
+        setVerifiedToken(200)
 
         cy.visit(homeUrl)
 
@@ -74,19 +54,7 @@ describe("The home page testing", () => {
     })
 
     it('should cannot login when the response from server is not 200', () => {
-        cy.intercept(
-            {
-                method: 'POST',
-                url: '/users/login',
-            },
-            {
-                statusCode: 401,
-                body: {
-                    detail: "Unauthorized"
-                }
-            }
-        )
-
+        setupLoginValid(401)
         cy.visit(homeUrl)
 
         validRoute(loginUrl)
@@ -106,37 +74,22 @@ describe("The home page testing", () => {
     })
 
     it('should not navigate to login url when the token is verified', () => {
-        cy.intercept(
-            {
-                method: 'POST',
-                url: '/users/verified',
-            },
-            {
-                statusCode: 200,
-            }
-        )
-
-        window.localStorage.setItem("token", "test_token")
+        setupValidToken()
         cy.visit(homeUrl)
 
         cy.wait(100)
             .then(() => {
                 validRoute(homeUrl)
             })
+
+        //cy.get('[data-testid="logout"]')
+        //    .click()
+
+        //validRoute(loginUrl)
     })
 
     it('should navigate to login url when the token is expired', () => {
-        cy.intercept(
-            {
-                method: 'POST',
-                url: '/users/verified',
-            },
-            {
-                statusCode: 401,
-            }
-        )
-
-        window.localStorage.setItem("token", "test_token")
+        setupExpiredToken()
         cy.visit(homeUrl)
 
         cy.wait(waitingTime)
@@ -156,5 +109,4 @@ describe("The home page testing", () => {
         cy.get('[data-testid="submit"]')
             .click()
     }
-
 })

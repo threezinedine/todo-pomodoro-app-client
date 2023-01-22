@@ -9,6 +9,7 @@ import HomePage from './HomePage'
 import { 
     AuthenRouteWrapper,
     Wrapper,
+    HeaderWrapper,
 } from './layouts'
 
 
@@ -17,10 +18,12 @@ const router = createBrowserRouter([
         path: '/',
         element: (
             <Wrapper>
-                <AuthenRouteWrapper
-                    onAuthComponent={<HomePage />}
-                    offAuthRoute="/login"
-                />
+                <HeaderWrapper>
+                    <AuthenRouteWrapper
+                        onAuthComponent={<HomePage />}
+                        offAuthRoute="/login"
+                    />
+                </HeaderWrapper>
             </Wrapper>
         ),
     },

@@ -1,3 +1,7 @@
+const tokenKey = "token"
+const testToken = "testToken"
+
+
 export const checkTextExist = (text: string): void => {
     cy.contains(text).should('exist')
 }
@@ -15,4 +19,45 @@ export const typeThenBlurByTestId = (text: string, testid: string) => {
 
 export const validRoute = (url: string) => {
     cy.url().should('eq', url)
+}
+
+export const setVerifiedToken = (status: number): void => {
+    cy.intercept(
+        {
+            method: 'POST',
+            url: '/users/verified',
+        },
+        {
+            statusCode: status,
+        }
+    )
+}
+
+export const setupLoginValid = (status: number): void => {
+    cy.intercept(
+        {
+            method: 'POST',
+            url: '/users/login',
+        },
+        {
+            statusCode: status,
+            body: {
+                user: {
+                    userId: 1,
+                    username: "threezinedine"
+                },
+                token: "testing_token"
+            }
+        }
+    )
+}
+
+export const setupExpiredToken = ():void => {
+    setVerifiedToken(401)
+    window.localStorage.setItem(tokenKey, testToken)
+}
+
+export const setupValidToken = ():void => {
+    setVerifiedToken(200)
+    window.localStorage.setItem(tokenKey, testToken)
 }
