@@ -13,6 +13,7 @@ export default class TaskComponent extends React.Component<TaskComponentProps> {
             taskName,
             onClick,
             finished,
+            taskType = "none",
         } = this.props
 
         return (
@@ -23,6 +24,9 @@ export default class TaskComponent extends React.Component<TaskComponentProps> {
                 >
                     { taskName }
                 </Button>
+                <div>
+                    { taskType }
+                </div>
                 <div>
                     { finished ? "Finished" : "Not finished" }
                 </div>

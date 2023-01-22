@@ -20,6 +20,7 @@ describe('the Task Component test', () => {
             render(<TaskComponent 
                     taskName={taskName}
                     onClick={mockOnClickFunc}
+                    taskType="core"
                     finished={true}
                 />)
         })
@@ -43,6 +44,12 @@ describe('the Task Component test', () => {
 
             expect(taskStatus).toBeInTheDocument()
         })
+
+        it("should display the task's type", () => {
+            const taskType = screen.getByText("core")
+
+            expect(taskType).toBeInTheDocument()
+        })
     })
 
     describe("When the task component is not finished", () => {
@@ -58,6 +65,12 @@ describe('the Task Component test', () => {
             const taskStatus = screen.getByText(notFinishedStatus)
 
             expect(taskStatus).toBeInTheDocument()
+        })
+
+        it("should dipslay none task's type when the taskType is not passed.", () => {
+            const taskType = screen.getByText("none")
+
+            expect(taskType).toBeInTheDocument()
         })
     })
 })
