@@ -1,6 +1,9 @@
 import {
     StoreAction,
 } from '../../stores'
+import {
+    TaskComponentData
+} from '../../components'
 
 
 interface HomePageDataContext {
@@ -8,11 +11,17 @@ interface HomePageDataContext {
 }
 
 
-export default interface HomePageContext extends HomePageDataContext{
+interface HomePageContext extends HomePageDataContext {
     dispatch: (action: StoreAction) => void
+}
+
+
+export default interface HomePageFullContext extends HomePageContext {
+    tasks: TaskComponentData[]
 }
 
 
 export type {
     HomePageDataContext,
+    HomePageContext,
 }

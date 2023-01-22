@@ -28,8 +28,6 @@ export default class HeaderWrapper extends React.Component<HeaderWrapperProps> {
         const { children } = this.props
         const { isLoggedIn } = this.state
 
-        console.log(isLoggedIn)
-
         return (
             <div>
                 <div>

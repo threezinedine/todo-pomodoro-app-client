@@ -59,22 +59,24 @@ export const setupFetchCurrentDateData = (): void => {
     cy.intercept(
         {
             method: 'GET',
-            url: '/tasks/current/not-done'
+            url: '/tasks/current'
         },
         {
             statusCode: 200,
-            data: {
-                tasks: [
-                    {
-                        taskId: 1,
-                        taskName: "Operating system",
-                    },
-                    {
-                        taskId: 2,
-                        taskName: "Networking",
-                    }
-                ]  
-            }
+            body:[
+                {
+                    taskId: 1,
+                    taskName: "Operating system",
+                    taskType: "core",
+                    finished: true,
+                },
+                {
+                    taskId: 2,
+                    taskName: "Networking",
+                    taskType: "project",
+                    finished: false,
+                }
+            ]  
         }
     )
 }

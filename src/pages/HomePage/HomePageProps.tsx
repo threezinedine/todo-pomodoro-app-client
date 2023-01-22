@@ -1,4 +1,6 @@
-import HomePageContext from "./HomePageContext"
+import {
+    HomePageContext,
+} from "./HomePageContext"
 
 
 export default interface HomePageProps extends HomePageContext {
