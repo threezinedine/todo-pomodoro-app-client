@@ -44,12 +44,36 @@ export const setupLoginValid = (status: number): void => {
         },
         {
             statusCode: status,
-            body: {
+            data: {
                 user: {
                     userId: 1,
                     username: "threezinedine"
                 },
                 token: "testing_token"
+            }
+        }
+    )
+}
+
+export const setupFetchCurrentDateData = (): void => {
+    cy.intercept(
+        {
+            method: 'GET',
+            url: '/tasks/current/not-done'
+        },
+        {
+            statusCode: 200,
+            data: {
+                tasks: [
+                    {
+                        taskId: 1,
+                        taskName: "Operating system",
+                    },
+                    {
+                        taskId: 2,
+                        taskName: "Networking",
+                    }
+                ]  
             }
         }
     )

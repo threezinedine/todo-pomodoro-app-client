@@ -7,6 +7,7 @@ import {
     setupExpiredToken,
     setVerifiedToken,
     setupLoginValid,
+    setupFetchCurrentDateData,
 } from '../utils'
 
 
@@ -114,6 +115,16 @@ describe("The home page testing", () => {
             .then(() => {
                 validRoute(loginUrl)
             })
+    })
+
+    it('should display the taskName when the home page is represent', () => {
+        setupValidToken()
+        setupFetchCurrentDateData()
+
+        cy.visit(homeUrl)
+
+        checkTextExist("Operating system")
+        checkTextExist("Networking")
     })
 
     const submitForm = (): void => {
