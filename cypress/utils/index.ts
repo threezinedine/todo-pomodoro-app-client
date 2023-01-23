@@ -90,3 +90,18 @@ export const setupValidToken = ():void => {
     setVerifiedToken(200)
     window.localStorage.setItem(TOKEN_KEY, testToken)
 }
+
+
+export const checkComponentExistById = (testId: string): void => {
+    cy.get(`[data-testid="${testId}"`)
+}
+
+export const clickButtonWithTestId = (testId: string): void => {
+    cy.get(`[data-testid="${testId}"`)
+        .click()
+}
+
+export const clickByText = (text: string): void => {
+    cy.contains(text)
+        .click()
+}

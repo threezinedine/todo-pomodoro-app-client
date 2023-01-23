@@ -1,51 +1,75 @@
-import React from "react"
+import React  from "react"
 import 'materialize-css'
 import { 
-    Navigate,
+    Navigate, 
+    useNavigate,
 } from "react-router-dom"
 import {
     Button,
 } from 'react-materialize'
 
 import HeaderWrapperProps from "./HeaderWrapperProps"
+import HeaderWrapperContext from "./HeaderWrapperContext"
 import { 
     TOKEN_KEY,
 } from "../../../constants"
 
 
-export default class HeaderWrapper extends React.Component<HeaderWrapperProps> {
-    state = {
-        isLoggedIn: true
-    }
-
-    setIsLoggedIn = (value: boolean): void => {
-        this.setState({
-            isLoggedIn: value
-        })
-    }
+class HeaderWrapper extends React.Component<HeaderWrapperProps, HeaderWrapperContext> {
+    static displayName = "HeaderWrapper"
 
     render(): React.ReactNode {
-        const { children } = this.props
-        const { isLoggedIn } = this.state
+        const { 
+            children, 
+            navigate = () => {
+                console.log("Nothing")
+            },
+        } = this.props
 
         return (
             <div>
-                <div>
+                <div 
+                    data-testid="header"
+                >
+                    <Button
+                        data-testid="brand"
+                        onClick={() => {
+                            navigate("/")
+                        }}
+                    >
+                        Brand
+                    </Button>
                     <Button
                         data-testid="logout"
                         onClick={(): void => {
                             localStorage.removeItem(TOKEN_KEY)
-                            this.setIsLoggedIn(false) 
+                            navigate("/login")
                         }}
                     >
                         Logout
                     </Button>          
                 </div>
                 <div>
-                    { children }
+                    <div 
+                        data-testid="sidebar">
+                        Sidebar
+                    </div>
+                    <div>
+                        { children }
+                    </div>
                 </div>
-                { !isLoggedIn && (<Navigate to="/login" replace={true} />) }
             </div>
         )
     }
 }
+
+function renderHeaderWrapper(props: HeaderWrapperProps): React.ReactElement {
+    return <HeaderWrapper navigate={useNavigate()} { ...props }/>
+}
+
+const withNavigation = () => {
+    return renderHeaderWrapper
+}
+
+
+export default withNavigation()

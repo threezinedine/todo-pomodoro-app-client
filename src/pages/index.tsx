@@ -6,6 +6,7 @@ import {
 import LoginPage from "./LoginPage"
 import RegisterPage from './RegisterPage'
 import HomePage from './HomePage'
+import PomodoroPage from './PomodoroPage'
 import { 
     AuthenRouteWrapper,
     Wrapper,
@@ -26,6 +27,19 @@ const router = createBrowserRouter([
                 </HeaderWrapper>
             </Wrapper>
         ),
+    },
+    {
+        path: '/pomodoro',
+        element: (
+            <Wrapper>
+                <HeaderWrapper>
+                    <AuthenRouteWrapper
+                        onAuthComponent={<PomodoroPage />}
+                        offAuthRoute="/login"
+                    />
+                </HeaderWrapper>
+            </Wrapper>
+        )
     },
     {
         path: "/login",

@@ -3,6 +3,9 @@ import axios from "axios"
 import {
     connect,
 } from "react-redux"
+import { 
+    Navigate,
+} from "react-router-dom"
 
 import HomePageProps from "./HomePageProps"
 import HomePageFullContext, {
@@ -18,19 +21,31 @@ import {
     StoreAction,
     StoreState,
 } from "../../stores"
+import {
+    addErrorAction,
+    removeErrorAction,
+} from "../../stores/error"
 
 
 class HomePage extends React.Component<HomePageProps, HomePageFullContext> {
     state = {
+        isNavigate: false,
         tasks: [],
         loginState: true,
-        dispatch: (action: StoreAction) => {
+        dispatch: (action: StoreAction): void => {
             console.log(action)
         },
     }
 
-    componentDidMount() {
+    navigateTo = (): void => {
+        this.setState({
+            isNavigate: true,
+        }) 
+    }
+
+    componentDidMount(): void {
         const token = localStorage.getItem(TOKEN_KEY)
+        const { dispatch } = this.props
 
         axios({
             method: 'GET',
@@ -45,28 +60,35 @@ class HomePage extends React.Component<HomePageProps, HomePageFullContext> {
                     tasks: response.data
                 })
             })
-            .catch(err => {
-                console.log(err)
+            .catch(() => {
+                dispatch(addErrorAction("Cannot fetch data"))
+
+                setTimeout(() => {
+                    dispatch(removeErrorAction())
+                }, 1000)
             })
     }
 
     render(): React.ReactNode {
-        const { tasks } = this.state
+        const { tasks, isNavigate } = this.state
 
         return (
-            <div>
-                {
-                    tasks.map((task: TaskComponentData, index: number):React.ReactNode => (
-                        <TaskComponent 
-                            key={index}
-                            {...task}
-                            onClick={() => {
-                                console.log("Here")
-                            }}
-                        /> 
-                    ))
-                }
-            </div>
+            <>
+                <div>
+                    {
+                        tasks.map((task: TaskComponentData, index: number):React.ReactNode => (
+                            <TaskComponent 
+                                key={index}
+                                {...task}
+                                onClick={(): void => {
+                                    this.navigateTo()
+                                }}
+                            /> 
+                        ))
+                    }
+                </div>
+                { isNavigate && (<Navigate to="/pomodoro" replace={true} />) }
+            </>
         )
     }
 }

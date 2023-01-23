@@ -1,3 +1,4 @@
+import {click} from '@testing-library/user-event/dist/click'
 import {
     checkTextExist,
     checkTextNonExist,
@@ -8,6 +9,9 @@ import {
     setVerifiedToken,
     setupLoginValid,
     setupFetchCurrentDateData,
+    checkComponentExistById,
+    clickButtonWithTestId,
+    clickByText,
 } from '../utils'
 
 
@@ -27,6 +31,10 @@ describe("The home page testing", () => {
 
     const homeUrl = "http://localhost:3000/"
     const loginUrl = "http://localhost:3000/login"
+    const pomodoroUrl = "http://localhost:3000/pomodoro"
+
+    const startButtonText = "Start"
+    const stopButtonText = "Stop"
 
     it('should navigate to the login at the fist time access to home route', () => {
         setupLoginValid(200)
@@ -131,4 +139,59 @@ describe("The home page testing", () => {
         cy.get('[data-testid="submit"]')
             .click()
     }
+
+    it('should display error when the reponse is not valid', () => {
+        setupValidToken()
+
+        cy.visit(homeUrl)
+
+        checkTextExist("Cannot fetch data")
+    })
+
+    it('should have the sidebar component and header component inside the home page', () => {
+        setupValidToken()
+
+        cy.visit(homeUrl)
+
+        checkComponentExistById("header")
+        checkComponentExistById("sidebar")
+
+        clickButtonWithTestId("brand")
+
+        validRoute(homeUrl)
+
+        cy.visit(pomodoroUrl)
+        clickButtonWithTestId("brand")
+        validRoute(homeUrl)
+
+    })
+
+    it("should navigate to the pomodoro route when the task's name is clicked", () => {
+        setupValidToken()
+        setupFetchCurrentDateData()
+
+        cy.visit(homeUrl)
+
+        clickByText("Operating system")
+
+        validRoute(pomodoroUrl)
+
+        checkTextExist("45:00")
+        checkTextExist("Operating system")
+
+        checkTextExist(startButtonText)
+        checkTextNonExist(stopButtonText)
+        clickByText(startButtonText)
+
+        checkTextNonExist(startButtonText)
+        checkTextExist(stopButtonText)
+        clickByText(stopButtonText)
+
+        checkTextExist(startButtonText)
+        checkTextNonExist(stopButtonText)
+
+        clickButtonWithTestId("brand")
+
+        validRoute(homeUrl)
+    })
 })

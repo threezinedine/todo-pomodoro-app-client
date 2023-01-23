@@ -17,7 +17,8 @@ describe('the Task Component test', () => {
 
     describe("When the task component is finished", () => {
         beforeEach(() => {
-            render(<TaskComponent 
+            render(
+                <TaskComponent 
                     taskName={taskName}
                     onClick={mockOnClickFunc}
                     taskType="core"
@@ -54,7 +55,8 @@ describe('the Task Component test', () => {
 
     describe("When the task component is not finished", () => {
         beforeEach(() => {
-            render(<TaskComponent 
+            render(
+                <TaskComponent 
                     taskName={taskName}
                     onClick={mockOnClickFunc}
                     finished={false}

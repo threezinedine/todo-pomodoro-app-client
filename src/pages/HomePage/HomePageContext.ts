@@ -18,6 +18,7 @@ interface HomePageContext extends HomePageDataContext {
 
 export default interface HomePageFullContext extends HomePageContext {
     tasks: TaskComponentData[]
+    isNavigate: boolean
 }
 
 

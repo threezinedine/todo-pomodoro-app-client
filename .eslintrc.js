@@ -29,5 +29,6 @@ module.exports = {
         semi: [2, "never"],
         "no-use-before-define": ["error", { "variables": false }],
         "@typescript-eslint/explicit-function-return-type": "warn",
+        "react/react-in-jsx-scope": "off",
     }
 }
