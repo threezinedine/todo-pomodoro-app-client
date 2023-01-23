@@ -6,4 +6,8 @@ export default interface PomodoroTimerProps {
     working?: boolean
     shortBreak?: boolean
     longBreak?: boolean
+    timer: () => Date
+    onStart: (date: { startTime: Date }) => void
+    onFinished: (data: { nextMode: string }) => void
+    currentTime: Date
 }

@@ -11,6 +11,8 @@ import PomodoroTimerContext from "./PomodoroTimerContext"
 export default class PomodoroTimer extends React.Component<PomodoroTimerProps, PomodoroTimerContext> {
     state = {
         isWorking: false,
+        startTime: new Date(2022, 1, 1, 1, 1, 0),
+        remainTime: 1000,
     }
 
     toggleWorkingState = () => {
@@ -27,17 +29,14 @@ export default class PomodoroTimer extends React.Component<PomodoroTimerProps, P
         return minutes + ":" + remainingSeconds.toString().padStart(2, '0');
     } 
 
-    render(): React.ReactNode {
+    componentDidMount() {
         const { 
-            taskName, 
             workingTimeInSeconds,
             shortBreakTimeInSeconds,
             longBreakTimeInSeconds,
-            shortBreak = false,
-            working = true,
+            working,
+            shortBreak,
         } = this.props
-
-        const { isWorking } = this.state
 
         let displayTime = 0
 
@@ -49,6 +48,65 @@ export default class PomodoroTimer extends React.Component<PomodoroTimerProps, P
             displayTime = longBreakTimeInSeconds
         }
 
+        this.setState({
+            remainTime: displayTime
+        })
+    }
+
+    componentWillUpdate(prevProps: PomodoroTimerProps): void {
+        const {
+            workingTimeInSeconds,
+            shortBreakTimeInSeconds,
+            longBreakTimeInSeconds,
+            working,
+            shortBreak,
+            currentTime,
+            onFinished,
+        } = this.props
+
+        const { 
+            startTime,
+            isWorking,
+        } = this.state
+
+        if (prevProps.currentTime !== currentTime) {
+            let displayTime = 0
+
+            if (working) {
+                displayTime = workingTimeInSeconds
+            } else if (shortBreak) {
+                displayTime = shortBreakTimeInSeconds
+            } else {
+                displayTime = longBreakTimeInSeconds
+            }
+
+            const remainTime: number = isWorking ? displayTime - (prevProps.currentTime.getTime() - startTime.getTime())/1000 : displayTime
+
+            this.setState({
+                remainTime: remainTime
+            })
+
+            if (remainTime === 0) {
+                this.toggleWorkingState()
+                onFinished({
+                    nextMode: "shortBreak"
+                })
+            }
+        }
+    }
+
+    render(): React.ReactNode {
+        const { 
+            taskName, 
+            timer,
+            onStart,
+        } = this.props
+
+        const { 
+            isWorking,
+            remainTime,
+        } = this.state
+
         const ControlButtonText = isWorking ? "Stop" : "Start"
 
         return (
@@ -57,11 +115,18 @@ export default class PomodoroTimer extends React.Component<PomodoroTimerProps, P
                     { taskName }
                 </div>
                 <div>
-                    { this.convertSecondToTime(displayTime) }
+                    { this.convertSecondToTime(remainTime) }
                 </div>
                 <Button
                     onClick={() => {
                         this.toggleWorkingState()
+                        const currentTime = timer()
+                        this.setState({
+                            startTime: currentTime
+                        })
+                        onStart({
+                            startTime: currentTime
+                        })
                     }}
                 >
                     { ControlButtonText }
