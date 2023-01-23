@@ -2,6 +2,7 @@ import {
     render,
     screen,
 } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 import { 
     PomodoroTimer,
@@ -38,6 +39,17 @@ describe("PomodoroTimer Testing", () => {
             const remainTime = screen.getByText("45:00")
 
             expect(remainTime).toBeInTheDocument()
+        })
+
+        it('should contain the start button which will convert to stop button when clicked', () => {
+            const startButton = screen.getByText("Start")
+            expect(screen.getByText("Start")).toBeInTheDocument()
+            expect(screen.queryByText("Stop")).toBeNull()
+
+            userEvent.click(startButton)
+
+            expect(screen.getByText("Stop")).toBeInTheDocument()
+            expect(screen.queryByText("Start")).toBeNull()
         })
     })
 
