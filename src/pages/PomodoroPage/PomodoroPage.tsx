@@ -6,6 +6,7 @@ import {
 import { 
     connect,
 } from "react-redux"
+import axios from "axios"
 
 import {
     StoreAction,
@@ -14,16 +15,37 @@ import {
 import PomodoroPageFullContext, { 
     PomodoroPageDataContext,
 } from "./PomodoroPageContext"
-
 import PomodoroPageProps from "./PomodoroPageProps"
+import {
+    addErrorAction,
+} from "../../stores/error"
 
 
 class PomodoroPage extends React.Component<PomodoroPageProps, PomodoroPageFullContext> {
     state = {
+        taskId: 1,
         isWorking: false,
         dispatch: (action: StoreAction): void => {
             console.log(action)
         },
+        taskName: ""
+    }
+
+    componentDidMount(): void {
+        const { taskId } = this.props
+
+        axios({
+            method: 'GET',
+            url: `http://localhost:8000/tasks/${taskId}` 
+        })
+            .then(response => {
+                this.setState({
+                    taskName: response.data.taskName
+                }) 
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     clickStartStopButton = (): void => {
@@ -35,13 +57,13 @@ class PomodoroPage extends React.Component<PomodoroPageProps, PomodoroPageFullCo
     }
 
     render(): React.ReactNode {
-        const { isWorking } = this.state
+        const { isWorking, taskName } = this.state
 
         return (
             <div>
                 PomodoroPage
                 <div>45:00</div>
-                <div>Operating system</div>
+                <div>{ taskName }</div>
                 <Button
                     onClick={this.clickStartStopButton}
                 >
@@ -54,7 +76,9 @@ class PomodoroPage extends React.Component<PomodoroPageProps, PomodoroPageFullCo
 
 
 const mapPomodoroPage = (state: StoreState): PomodoroPageDataContext => {
-    return {}
+    return {
+        taskId: state.TaskReducer.taskId 
+    }
 }
 
 

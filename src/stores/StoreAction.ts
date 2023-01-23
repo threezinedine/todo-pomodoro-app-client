@@ -4,9 +4,12 @@ import {
 import {
     ErrorAction,
 } from './error/constants'
+import {
+    TaskAction,
+} from './task/constants'
 
 
-type StoreAction = LoginAction | ErrorAction
+type StoreAction = LoginAction | ErrorAction | TaskAction
 
 
 export type {

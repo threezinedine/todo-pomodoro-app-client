@@ -81,6 +81,44 @@ export const setupFetchCurrentDateData = (): void => {
     )
 }
 
+export const setUpFirstTestTask = (): void => {
+    cy.intercept(
+        {
+            method: 'GET',
+            url: '/tasks/1'
+        },
+        {
+            statusCode: 200,
+            body:
+            {
+                taskId: 1,
+                taskName: "Operating system",
+                taskType: "core",
+                finished: true,
+            }
+        }
+    )
+}
+
+export const setUpSecondTestTask = (): void => {
+    cy.intercept(
+        {
+            method: 'GET',
+            url: '/tasks/2'
+        },
+        {
+            statusCode: 200,
+            body:
+            {
+                taskId: 2,
+                taskName: "Networking",
+                taskType: "project",
+                finished: false,
+            }
+        }
+    )
+}
+
 export const setupExpiredToken = ():void => {
     setVerifiedToken(401)
     window.localStorage.setItem(TOKEN_KEY, testToken)

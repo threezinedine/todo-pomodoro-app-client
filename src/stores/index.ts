@@ -3,14 +3,9 @@ import {
     combineReducers,
 } from 'redux'
 
-import LoginReducer, {
-    LoginState,
-    LoginAction,
-} from './login'
-import ErrorReducer, {
-    ErrorAction,
-    ErrorState,
-} from './error'
+import LoginReducer from './login'
+import ErrorReducer from './error'
+import TaskReducer from './task'
 import StoreState from './StoreState'
 import { 
     StoreAction,
@@ -20,13 +15,12 @@ import {
 const store = createStore(combineReducers({
     LoginReducer,
     ErrorReducer,
+    TaskReducer,
 }))
 
 
 export default store
 export type {
-    LoginState,
-    LoginAction,
     StoreState,
     StoreAction,
 }

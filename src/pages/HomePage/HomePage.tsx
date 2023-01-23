@@ -25,6 +25,9 @@ import {
     addErrorAction,
     removeErrorAction,
 } from "../../stores/error"
+import {
+    setCurrentTask,
+} from "../../stores/task"
 
 
 class HomePage extends React.Component<HomePageProps, HomePageFullContext> {
@@ -55,7 +58,6 @@ class HomePage extends React.Component<HomePageProps, HomePageFullContext> {
             }
         })
             .then((response) => {
-                console.log(response)
                 this.setState({
                     tasks: response.data
                 })
@@ -71,6 +73,7 @@ class HomePage extends React.Component<HomePageProps, HomePageFullContext> {
 
     render(): React.ReactNode {
         const { tasks, isNavigate } = this.state
+        const { dispatch } = this.props
 
         return (
             <>
@@ -81,6 +84,7 @@ class HomePage extends React.Component<HomePageProps, HomePageFullContext> {
                                 key={index}
                                 {...task}
                                 onClick={(): void => {
+                                    dispatch(setCurrentTask(task.taskId))
                                     this.navigateTo()
                                 }}
                             /> 

@@ -4,7 +4,7 @@ import {
 
 
 interface PomodoroPageDataContext {
-
+    taskId: number | null
 }
 
 interface PomodoroPageContext extends PomodoroPageDataContext {
@@ -13,6 +13,7 @@ interface PomodoroPageContext extends PomodoroPageDataContext {
 
 export default interface PomodoroPageFullContext extends PomodoroPageContext {
     isWorking: boolean
+    taskName: string
 }
 
 

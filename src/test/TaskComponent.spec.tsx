@@ -19,6 +19,7 @@ describe('the Task Component test', () => {
         beforeEach(() => {
             render(
                 <TaskComponent 
+                    taskId={1}
                     taskName={taskName}
                     onClick={mockOnClickFunc}
                     taskType="core"
@@ -57,6 +58,7 @@ describe('the Task Component test', () => {
         beforeEach(() => {
             render(
                 <TaskComponent 
+                    taskId={1}
                     taskName={taskName}
                     onClick={mockOnClickFunc}
                     finished={false}

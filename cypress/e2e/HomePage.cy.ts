@@ -1,4 +1,3 @@
-import {click} from '@testing-library/user-event/dist/click'
 import {
     checkTextExist,
     checkTextNonExist,
@@ -12,6 +11,8 @@ import {
     checkComponentExistById,
     clickButtonWithTestId,
     clickByText,
+    setUpFirstTestTask,
+    setUpSecondTestTask,
 } from '../utils'
 
 
@@ -35,6 +36,12 @@ describe("The home page testing", () => {
 
     const startButtonText = "Start"
     const stopButtonText = "Stop"
+    const brandId = "brand"
+
+    const firstTestTaskName = "Operating system"
+    const secondTestTaskName = "Networking"
+
+    const testDefaultTime = "45:00"
 
     it('should navigate to the login at the fist time access to home route', () => {
         setupLoginValid(200)
@@ -172,13 +179,29 @@ describe("The home page testing", () => {
 
         cy.visit(homeUrl)
 
-        clickByText("Operating system")
+        clickByText(firstTestTaskName)
+
+        setUpFirstTestTask()
 
         validRoute(pomodoroUrl)
+        checkTextExist(testDefaultTime)
+        checkTextExist(firstTestTaskName)
+        checkButtonWorking()
+        clickButtonWithTestId(brandId)
+        validRoute(homeUrl)
 
-        checkTextExist("45:00")
-        checkTextExist("Operating system")
+        setUpSecondTestTask()
 
+        clickByText(secondTestTaskName)
+        validRoute(pomodoroUrl)
+        checkTextExist(testDefaultTime)
+        checkTextExist(secondTestTaskName)
+        checkButtonWorking()
+        clickButtonWithTestId(brandId)
+        validRoute(homeUrl)
+    })
+
+    const checkButtonWorking = () => {
         checkTextExist(startButtonText)
         checkTextNonExist(stopButtonText)
         clickByText(startButtonText)
@@ -189,9 +212,5 @@ describe("The home page testing", () => {
 
         checkTextExist(startButtonText)
         checkTextNonExist(stopButtonText)
-
-        clickButtonWithTestId("brand")
-
-        validRoute(homeUrl)
-    })
+    }
 })

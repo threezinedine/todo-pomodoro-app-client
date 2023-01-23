@@ -1,4 +1,5 @@
 interface TaskComponentData {
+    taskId: number
     taskName: string 
     finished: boolean
     taskType?: string
